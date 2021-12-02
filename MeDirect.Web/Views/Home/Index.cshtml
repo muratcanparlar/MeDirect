@@ -1,0 +1,173 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome MeDirect Bank Lights Off game</h1>
+    <p>Let's turn off all lights </p>
+</div>
+
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-center text-center">
+            <button type="button" class="btn btn-primary mb-2" id="createGame" name="createGame">Create Board</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-center text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Score</h5>
+                    <input type="text" readonly class="form-control-plaintext text-center" id="totalClickCount" value="0">
+                    
+                    <div id="board"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    @section Scripts{
+
+        <script>
+
+            let xlength = 5;
+            let ylength = 5;
+            let boardContainer = [];
+            $('#createGame').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/CreateBoard',
+                    async: false,
+                    success: success,
+                    error: error
+                });
+            })
+
+
+            function success(result, status) {
+                boardContainer = result;
+                displayBoard(boardContainer, xlength, ylength);
+            }
+            function error(result, status) {
+                alert('Sorry! The GameBoard Couldnt Create');
+            }
+
+
+            function createGame2(xlength, ylength) {
+
+                // Update board container
+                boardContainer = createBoard(xlength, ylength);
+
+                // Reset counter
+                attemptsCounter = 0;
+                /*attemptsPara.innerHTML = `Attempts: ${attemptsCounter}`;*/
+
+                // Reset board completed
+                boardCompleted = false;
+
+                // Finally display the board
+                displayBoard(boardContainer);
+            }
+
+            function createBoard(x, y) {
+
+                let newBoard = [];
+
+                for (j = 0; j < y; j++) {
+                    let xRow = [];
+                    var lightIndex = Math.floor(Math.random() * x);
+                    for (i = 0; i < x; i++) {
+                        let lightOn = false;
+                        if (lightIndex === i) {
+                            lightOn = true;
+                        }
+                        xRow.push(lightOn);
+                    }
+
+                    newBoard.push(xRow);
+                }
+                return newBoard;
+
+            }
+
+            function displayBoard(board, xlength, ylength) {
+
+                let boardDiv = document.getElementById("board");
+                while (boardDiv.hasChildNodes()) {
+                    boardDiv.removeChild(boardDiv.lastChild);
+                }
+
+                for (i = 0; i < ylength; i++) {
+
+                    let row = document.createElement('div');
+                    row.className = 'row';
+
+                    for (j = 0; j < xlength; j++) {
+                        let boardItem = document.createElement('div');
+                        if (board[i].columns[j].col === true) {
+                            boardItem.className = 'boardItemLightOn';
+                        }
+                        else {
+                            boardItem.className = 'boardItemLightOff';
+                        }
+                        boardItem.onclick = userClick.bind(undefined, i, j, xlength, ylength);
+                        row.appendChild(boardItem);
+                    }
+                    boardDiv.appendChild(row);
+                }
+            }
+
+
+
+
+            function userClick(x, y, xlen, ylen) {
+
+                updateBoard(boardContainer, x, y);
+                displayBoard(boardContainer, xlen, ylen);
+
+                var i = document.getElementById('totalClickCount').value;
+                document.getElementById('totalClickCount').value = ++i;
+
+                var boardCompleted = checkBoardCompleted(boardContainer);
+
+                if (!boardCompleted) {
+                    alert(`Congratulations! you've completed the game with ${document.getElementById('totalClickCount').value} attempt. `);
+                }
+
+            }
+
+
+            function updateBoard(board, x, y) {
+
+                board[x].columns[y].col = !board[x].columns[y].col;
+                // Update
+
+                if (x > 0) {
+                    board[x - 1].columns[y].col = !board[x - 1].columns[y].col;
+                }
+                if (x < board.length - 1) {
+                    board[x + 1].columns[y].col = !board[x + 1].columns[y].col;
+                }
+                if (y > 0) {
+                    board[x].columns[y - 1].col = !board[x].columns[y - 1].col;
+                }
+                if (y < board.length - 1) {
+                    board[x].columns[y + 1].col = !board[x].columns[y + 1].col;
+                }
+            }
+
+            function checkBoardCompleted(board) {
+
+                for (i = 0; i < board.length; i++) {
+                    for (j = 0; j < board[0].length; j++) {
+                        if (board[i].columns[j].col) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        </script>
+
+    }
