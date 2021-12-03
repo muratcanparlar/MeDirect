@@ -1,5 +1,6 @@
 ﻿using MeDirect.Core.Models;
 using MeDirect.Core.Services;
+using MeDirect.Web.Clients;
 using MeDirect.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,29 +15,64 @@ namespace MeDirect.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IGameBoardService _gameBoardService;
-        public HomeController(ILogger<HomeController> logger, IGameBoardService gameBoardService)
+        private readonly IGameServiceClient _gameServiceClient;
+        public HomeController(ILogger<HomeController> logger, IGameServiceClient gameServiceClient)
         {
             _logger = logger;
-            _gameBoardService = gameBoardService;
+            _gameServiceClient = gameServiceClient;
         }
 
 
-        public List<BoardRow> CreateBoard()
+        public async Task<List<BoardRow>> CreateBoard()
         {
-            List<BoardRow> rowData = new List<BoardRow>();
-            rowData= _gameBoardService.CreateGameBoard(5, 5);            
-            return rowData;
+            var result= await _gameServiceClient.DrawGameBoard();
+            List<BoardRow> dataBoardRow = new List<BoardRow>();
+            if(result.Content != null)
+            {
+                dataBoardRow = result.Content.ToList();
+            }
+            return dataBoardRow;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _gameServiceClient.GameSettings();
+            UpdateGameSettingsViewModel model = new UpdateGameSettingsViewModel();
+            if (result.Content != null)
+            {
+                model.GameSettings = result.Content;
+            }
+            return View(model);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Settings()
         {
-            return View();
+            var result = await _gameServiceClient.GameSettings();
+            UpdateGameSettingsViewModel model = new UpdateGameSettingsViewModel();
+            if (result.Content != null)
+            {
+                model.GameSettings = result.Content;
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Settings(UpdateGameSettingsViewModel model)
+        {
+            int resultCode = 0;
+            string resultMsg = "";
+            var result = await _gameServiceClient.UpdateGameSettings(model.GameSettings);
+            if (result.IsSuccessStatusCode)
+            {
+                resultCode = 0;
+                resultMsg = "Game Settings have updated successfully.";
+
+            }
+            else
+            {
+                resultCode = 1;
+                resultMsg = "Something went wrong during update process.";
+            }
+            return Json(new { code = resultCode, msg = resultMsg });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

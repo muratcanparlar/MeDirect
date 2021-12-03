@@ -1,11 +1,15 @@
+using FluentValidation.AspNetCore;
 using MeDirect.Core.Services;
 using MeDirect.Service;
+using MeDirect.Web.Clients;
+using MeDirect.Web.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +29,15 @@ namespace MeDirect.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IGameBoardService, GameBoardService>();
+            services.AddControllers().AddFluentValidation(fv =>
+            {
+                fv.RegisterValidatorsFromAssemblyContaining<GameSettingsValidator>();
+            });
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRefitClient<IGameServiceClient>(new RefitSettings { CollectionFormat = CollectionFormat.Csv })
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:22656/api"));
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

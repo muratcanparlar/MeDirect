@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+@model MeDirect.Web.Models.UpdateGameSettingsViewModel
+
+
+
+@using (Html.BeginForm("UpdateGameSettings", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.GameSettings.Id)
+        @Html.TextBoxFor(x => x.GameSettings.Id, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.GameSettings.Size)
+        @Html.TextBoxFor(x => x.GameSettings.Size, new { @class = "form-control", placeholder = "Enter Url" })
+        @Html.ValidationMessageFor(x => x.GameSettings.Size, null, new { @class = "invalid-feedback d-block" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+
+}
+
+
+@section Scripts{
+    <script>
+        $("form").submit(function (event) {
+            var form = $(this);
+            if (form.valid()) {
+                event.preventDefault();
+                var UpdateGameSettingsViewModel = {
+                    GameSettings: {
+                        Id: $("#GameSettings_Id").val(),
+                        Size: $('#GameSettings_Size').val()
+                    }
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/Settings',
+                    data: UpdateGameSettingsViewModel,
+                    async: false,
+                    success: success,
+                    error: error
+                });
+            }
+            else {
+                return false;
+            }
+        })
+
+        function success(result, status) {
+              if (result.code == 0) {
+                    Swal.fire(
+                        result.msg,
+                        '',
+                        'success'
+                    ).then(function () {
+                        var url = '@Url.Action("Index", "Home")';
+                        window.location.href = url;
+                    });
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: result.msg,
+
+                    })
+                }
+        }
+        function error() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+
+            })
+        }
+    </script>
+
+}

@@ -7,50 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
-       /* h4, p, button, input {
-            font-family: Helvetica, sans-serif, Arial;
-            color: #5A5A5A;
-            text-align: center;
-        }
-
-        p, button, input {
-            font-size: 14px;
-            margin-left: 5px;
-            margin-right: 5px;
-            text-decoration: none;
-        }
-
-        button {
-            display: inline-block;
-            background-color: #91CBF3;
-            border: none;
-            padding: 10px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        input {
-            display: inline-block;
-            border: 1px solid lightgrey;
-            padding: 10px 20px;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        #container {
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        #instructions {
-            margin: 20px auto;
-            width: 50%;
-        }*/
-
         .boardItemLightOn {
             background-color: lightgreen;
             border: 1px solid black;
@@ -85,7 +41,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Settings">Settings</a>
                         </li>
                     </ul>
                 </div>
@@ -105,7 +61,9 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

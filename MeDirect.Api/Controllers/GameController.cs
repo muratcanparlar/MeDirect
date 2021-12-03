@@ -1,0 +1,56 @@
+﻿using MeDirect.Core.Models;
+using MeDirect.Core.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MeDirect.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GameController : ControllerBase
+    {
+        private readonly IGameBoardService _gameBoardService;
+        public GameController(IGameBoardService gameBoardService)
+        {
+            _gameBoardService = gameBoardService;
+        }
+        [HttpGet("GameSettings")]
+        public async Task<ActionResult<IEnumerable<GameSetting>>> GameSettings()
+        {
+            var apps = await _gameBoardService.GetGameSettings();
+            return Ok(apps);
+        }
+
+        [HttpGet("DrawGameBoard")]
+        public async Task<ActionResult<IEnumerable<BoardRow>>> DrawGameBoard()
+        {
+            var apps = await _gameBoardService.DrawGameBoard();
+            return Ok(apps.ToArray());
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult<IEnumerable<GameSetting>>> CreateGameSetting(GameSetting gameSetting)
+        {
+            var result = await _gameBoardService.CreateGameSetting(gameSetting);
+            return Ok(result);
+        }
+
+        [HttpPost("Update")]
+        public async Task<ActionResult<IEnumerable<GameSetting>>> UpdateGameSetting(GameSetting gameSetting)
+        {
+            await _gameBoardService.UpdateGameSetting(gameSetting);
+            return Ok();
+        }
+
+        [HttpPost("Delete")]
+        public async Task<ActionResult<IEnumerable<GameSetting>>> DeleteGameSetting(GameSetting gameSetting)
+        {
+            await _gameBoardService.DeleteGameSetting(gameSetting.Id);
+            return Ok();
+        }
+    }
+}

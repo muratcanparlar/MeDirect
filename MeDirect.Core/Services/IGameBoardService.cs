@@ -2,11 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MeDirect.Core.Services
 {
     public interface IGameBoardService
     {
-        List<BoardRow> CreateGameBoard(int sizeX, int sizeY);
+        Task<GameSetting> GetGameSettings();
+        Task<List<BoardRow>> DrawGameBoard();
+        Task<GameSetting> CreateGameSetting(GameSetting gameSetting);
+        Task UpdateGameSetting(GameSetting gameSetting);
+        Task DeleteGameSetting(Guid settingId);
     }
 }
