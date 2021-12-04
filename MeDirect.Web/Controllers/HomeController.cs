@@ -34,6 +34,19 @@ namespace MeDirect.Web.Controllers
             return dataBoardRow;
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ClickBoard(GameBoardClick model)
+        {
+            var result = await _gameServiceClient.ClickBoard(model);
+            if (result.Content !=null)
+            {
+                model.BoardRows = result.Content.BoardRows;
+                model.IsBoardComplated = result.Content.IsBoardComplated;
+            }
+            return Json(new { boardRows = model.BoardRows, isComplated = model.IsBoardComplated });
+        }
+
+        
         public async Task<IActionResult> Index()
         {
             var result = await _gameServiceClient.GameSettings();

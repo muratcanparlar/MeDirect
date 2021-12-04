@@ -17,5 +17,8 @@ namespace MeDirect.Web.Clients
 
         [Post("/Game/Update/")]
         public Task<ApiResponse<GameSetting>> UpdateGameSettings([Body] GameSetting gameSetting);
+
+        [Post("/Game/ClickBoard/")]
+        public Task<ApiResponse<GameBoardClick>> ClickBoard([Body] GameBoardClick GameBoardClick);
     }
 }

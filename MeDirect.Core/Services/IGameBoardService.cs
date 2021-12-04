@@ -13,6 +13,7 @@ namespace MeDirect.Core.Services
         Task<GameSetting> CreateGameSetting(GameSetting gameSetting);
         Task UpdateGameSetting(GameSetting gameSetting);
         Task DeleteGameSetting(Guid settingId);
+        GameBoardClick ClickBoard(GameBoardClick gameBoardClick);
     }
 }
 

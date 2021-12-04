@@ -52,5 +52,12 @@ namespace MeDirect.Api.Controllers
             await _gameBoardService.DeleteGameSetting(gameSetting.Id);
             return Ok();
         }
+
+        [HttpPost("ClickBoard")]
+        public ActionResult<GameBoardClick> ClickBoard(GameBoardClick gameBoardClick)
+        {
+           var result= _gameBoardService.ClickBoard(gameBoardClick);
+           return Ok(result);
+        }
     }
 }

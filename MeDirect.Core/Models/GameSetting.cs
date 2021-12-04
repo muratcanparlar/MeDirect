@@ -8,5 +8,6 @@ namespace MeDirect.Core.Models
     {
         public Guid Id { get; set; }
         public int Size { get; set; }
+        
     }
 }

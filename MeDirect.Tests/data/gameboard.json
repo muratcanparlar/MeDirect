@@ -1,0 +1,66 @@
+[
+  {
+    "columns": [
+      {
+        "col": true
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      }
+    ]
+  },
+  {
+    "columns": [
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      }
+    ]
+  },
+  {
+    "columns": [
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": true
+      },
+      {
+        "col": false
+      }
+    ]
+  },
+  {
+    "columns": [
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      },
+      {
+        "col": false
+      }
+    ]
+  }
+]

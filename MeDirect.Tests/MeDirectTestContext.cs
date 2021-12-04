@@ -20,6 +20,7 @@ namespace MeDirect.Tests
         {
             base.OnModelCreating(modelBuilder);
             seedData<GameSetting>(modelBuilder, "../../../data/gamesetting.json");
+            seedData<GameLight>(modelBuilder, "../../../data/gamelights.json");
         }
 
         private void seedData<T>(ModelBuilder modelBuilder, string file) where T : class

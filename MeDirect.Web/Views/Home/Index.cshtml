@@ -128,53 +128,95 @@
 
 
 
-        function userClick(x, y, xlen, ylen) {
-
-            updateBoard(boardContainer, x, y);
-            displayBoard(boardContainer, xlen, ylen);
-
+        function userClick(y, x, xlen, ylen) {
+            debugger;
             var i = document.getElementById('totalClickCount').value;
             document.getElementById('totalClickCount').value = ++i;
-
-            var boardCompleted = checkBoardCompleted(boardContainer);
-
-            if (!boardCompleted) {
-                alert(`Congratulations! you've completed the game with ${document.getElementById('totalClickCount').value} attempt. `);
+            var GameBoardClick = {
+                    BoardRows: boardContainer,
+                    ClickY: y,
+                    ClickX: x,
             }
-
-        }
-
-
-        function updateBoard(board, x, y) {
-
-            board[x].columns[y].col = !board[x].columns[y].col;
-            // Update
-
-            if (x > 0) {
-                board[x - 1].columns[y].col = !board[x - 1].columns[y].col;
-            }
-            if (x < board.length - 1) {
-                board[x + 1].columns[y].col = !board[x + 1].columns[y].col;
-            }
-            if (y > 0) {
-                board[x].columns[y - 1].col = !board[x].columns[y - 1].col;
-            }
-            if (y < board.length - 1) {
-                board[x].columns[y + 1].col = !board[x].columns[y + 1].col;
-            }
-        }
-
-        function checkBoardCompleted(board) {
-
-            for (i = 0; i < board.length; i++) {
-                for (j = 0; j < board[0].length; j++) {
-                    if (board[i].columns[j].col) {
-                        return false;
+            $.ajax({
+                type: "POST",
+                url: '/Home/ClickBoard',
+                data: GameBoardClick,
+                async: false,
+                success: function (result, status) {
+                   
+                    boardContainer = result.boardRows;
+                    displayBoard(boardContainer, xlen, ylen);
+                    var boardCompleted = result.isComplated//checkBoardCompleted(boardContainer);
+                    if (boardCompleted) {
+                        Swal.fire(
+                            `Congratulations! you've completed the game with ${document.getElementById('totalClickCount').value} attempt. `,
+                            '',
+                            'success'
+                        )
                     }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+
+                    })
                 }
-            }
-            return true;
+            });
+
+
+
+            //updateBoard(boardContainer, y, x);
+            //displayBoard(boardContainer, xlen, ylen);
+
+            //var i = document.getElementById('totalClickCount').value;
+            //document.getElementById('totalClickCount').value = ++i;
+
+            //var boardCompleted = checkBoardCompleted(boardContainer);
+
+            //if (boardCompleted) {
+            //     Swal.fire(
+            //            `Congratulations! you've completed the game with ${document.getElementById('totalClickCount').value} attempt. `,
+            //            '',
+            //            'success'
+            //        )    
+            //}
+
         }
+
+
+        //function updateBoard(board, y, x) {
+
+        //    board[y].columns[x].col = !board[y].columns[x].col;
+        //    // Update
+
+        //    if (y > 0) {
+        //        board[y - 1].columns[x].col = !board[y - 1].columns[x].col;
+        //    }
+        //    if (y < board.length - 1) {
+        //        board[y + 1].columns[x].col = !board[y + 1].columns[x].col;
+        //    }
+        //    if (x > 0) {
+        //        board[y].columns[x - 1].col = !board[y].columns[x - 1].col;
+        //    }
+        //    if (x < board.length - 1) {
+        //        board[y].columns[x + 1].col = !board[y].columns[x + 1].col;
+        //    }
+        //}
+
+        //function checkBoardCompleted(board) {
+        //    debugger;
+        //    let result = true;
+        //    for (i = 0; i < board.length; i++) {
+        //        for (j = 0; j < board.length; j++) {
+        //            if (board[i].columns[j].col === false) {
+        //                result=false;
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
     </script>
 
 }

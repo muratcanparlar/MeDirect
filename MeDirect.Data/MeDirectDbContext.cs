@@ -9,6 +9,8 @@ namespace MeDirect.Data
     public class MeDirectDbContext:DbContext
     {
         public DbSet<GameSetting> GameSettings { get; set; }
+
+        public DbSet<GameLight> GameLights { get; set; }
         public MeDirectDbContext(DbContextOptions<MeDirectDbContext> options):base(options)
         {}
 
