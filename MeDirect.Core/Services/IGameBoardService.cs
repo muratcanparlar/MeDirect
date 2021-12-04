@@ -15,3 +15,4 @@ namespace MeDirect.Core.Services
         Task DeleteGameSetting(Guid settingId);
     }
 }
+
