@@ -3,7 +3,7 @@
 1-)Firstly, you have to create database with this code "CREATE DATABASE MeDirect;". After that for creating table with script file which is name "MeDirectGame.sql". This file is in the main project folder.  
 2-)Secondly, you have to check to connection String which is in the MeDirect.Api project "appsettings.json" file.  
 3-)The Server Name should be same your pc  "Mssql Server Name".  
-4-)Build and Start Api and Web Project with together.  
+4-)Build and Start Api and Web Project with together.(Right click solution and choose set a startup project.  chose MeDirect.Api and MeDirect.Web project)  
 
 
 You can play game on "Home" Page.  
