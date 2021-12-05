@@ -1,6 +1,6 @@
 # MeDirect Lights Out Puzzle
 
-#1-)Firstly, you have to create database and table with script file which is name "MeDirectGame.sql" 
+1-)Firstly, you have to create database and table with script file which is name "MeDirectGame.sql"  
 2-)Secondly, you have to check to connection String which is in the MeDirect.Api project "appsettings.json" file. 
 3-)The Server Name should be same your pc  "Mssql Server Name".
 4-)Build and Start Api and Web Project with together.
