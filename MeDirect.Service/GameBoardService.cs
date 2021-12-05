@@ -207,7 +207,7 @@ namespace MeDirect.Service
         {
             gameLight.Id = Guid.NewGuid();
             await _dbContext.Set<GameLight>().AddAsync(gameLight);
-            var result=_dbContext.SaveChangesAsync();
+            var result=await _dbContext.SaveChangesAsync();
             return gameLight;
 
         }
