@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MeDirect.Web.Models
 {
-    public class UpdateGameSettingsViewModel
+    public class SetGameLightsModel
     {
-        public GameSetting GameSettings { get; set; }
-        public List<GameLight> GameLights { get; set; }
+       public GameLight GameLight { get; set; }
     }
 }

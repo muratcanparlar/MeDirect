@@ -49,11 +49,11 @@ namespace MeDirect.Web.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var result = await _gameServiceClient.GameSettings();
+            var resultGameSetting = await _gameServiceClient.GameSettings();
             UpdateGameSettingsViewModel model = new UpdateGameSettingsViewModel();
-            if (result.Content != null)
+            if (resultGameSetting.Content != null)
             {
-                model.GameSettings = result.Content;
+                model.GameSettings = resultGameSetting.Content;
             }
             return View(model);
         }
@@ -65,6 +65,11 @@ namespace MeDirect.Web.Controllers
             if (result.Content != null)
             {
                 model.GameSettings = result.Content;
+            }
+            var resultGameLights = await _gameServiceClient.GameTurnOnLigths(model.GameSettings.Id);
+            if (resultGameLights.Content != null)
+            {
+                model.GameLights = resultGameLights.Content.ToList();
             }
             return View(model);
         }
@@ -87,6 +92,47 @@ namespace MeDirect.Web.Controllers
             }
             return Json(new { code = resultCode, msg = resultMsg });
         }
+
+
+        [HttpPost]
+        public async Task<JsonResult> AddCoordinate(SetGameLightsModel model)
+        {
+            int resultCode = 0;
+            string resultMsg = "";
+            var result = await _gameServiceClient.AddTurnOnLigths(model.GameLight);
+            if (result.IsSuccessStatusCode)
+            {
+                resultCode = 0;
+                resultMsg = "Open Light Coordiante have inserted successfully.";
+            }
+            else
+            {
+                resultCode = 1;
+                resultMsg = "Something went wrong during update process.";
+            }
+            return Json(new { code = resultCode, msg = resultMsg });
+        }
+        [HttpPost]
+        public async Task<JsonResult> DelOpenLight(SetGameLightsModel setGameLightsModel)
+        {
+            int resultCode = 0;
+            string resultMsg = "";
+            var result = await _gameServiceClient.DeleteTurnOnLigths(setGameLightsModel.GameLight.Id);
+            if (result.IsSuccessStatusCode)
+            {
+                resultCode = 0;
+                resultMsg = "Open Light has remove successfully.";
+            }
+            else
+            {
+                resultCode = 1;
+                resultMsg = "Something went wrong during update process.";
+            }
+            return Json(new { code = resultCode, msg = resultMsg });
+        }
+        
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

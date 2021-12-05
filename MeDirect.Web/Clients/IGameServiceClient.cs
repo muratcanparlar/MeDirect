@@ -20,5 +20,15 @@ namespace MeDirect.Web.Clients
 
         [Post("/Game/ClickBoard/")]
         public Task<ApiResponse<GameBoardClick>> ClickBoard([Body] GameBoardClick GameBoardClick);
+
+        [Get("/Game/GameTurnOnLigths")]
+        public Task<ApiResponse<IEnumerable<GameLight>>> GameTurnOnLigths(Guid GameSettingId);
+
+        [Post("/Game/AddTurnOnLigths")]
+        public Task<ApiResponse<IEnumerable<GameLight>>> AddTurnOnLigths(GameLight model);
+
+        [Delete("/Game/DeleteTurnOnLigths")]
+        public Task<ApiResponse<IEnumerable<GameLight>>> DeleteTurnOnLigths(Guid gameLightId);
+
     }
 }

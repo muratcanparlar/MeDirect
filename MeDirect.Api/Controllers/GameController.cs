@@ -24,7 +24,7 @@ namespace MeDirect.Api.Controllers
             var apps = await _gameBoardService.GetGameSettings();
             return Ok(apps);
         }
-
+                
         [HttpGet("DrawGameBoard")]
         public async Task<ActionResult<IEnumerable<BoardRow>>> DrawGameBoard()
         {
@@ -58,6 +58,28 @@ namespace MeDirect.Api.Controllers
         {
            var result= _gameBoardService.ClickBoard(gameBoardClick);
            return Ok(result);
+        }
+
+
+        [HttpGet("GameTurnOnLigths")]
+        public async Task<ActionResult<IEnumerable<GameLight>>> GameTurnOnLigths(Guid GameSettingId)
+        {
+            var apps = await _gameBoardService.GameTurnOnLigths(GameSettingId);
+            return Ok(apps);
+        }
+
+        [HttpPost("AddTurnOnLigths")]
+        public async Task<ActionResult<GameLight>> AddTurnOnLigths(GameLight gameLight)
+        {
+            var apps = await _gameBoardService.AddTurnOnLigth(gameLight);
+            return Ok(apps);
+        }
+
+        [HttpDelete("DeleteTurnOnLigths")]
+        public async Task<ActionResult<GameLight>> DeleteTurnOnLigths(Guid gameLightId)
+        {
+            await _gameBoardService.DeleteTurnOnLigth(gameLightId);
+            return Ok();
         }
     }
 }

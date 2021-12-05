@@ -198,7 +198,29 @@ namespace MeDirect.Service
             return BoardRows;
         }
 
+        public async Task<List<GameLight>> GameTurnOnLigths(Guid gameSettingId)
+        {
+           return await  _dbContext.GameLights.Where(x => x.GameSettingId == gameSettingId).ToListAsync();
+        }
 
+        public async Task<GameLight> AddTurnOnLigth(GameLight gameLight)
+        {
+            gameLight.Id = Guid.NewGuid();
+            await _dbContext.Set<GameLight>().AddAsync(gameLight);
+            var result=_dbContext.SaveChangesAsync();
+            return gameLight;
+
+        }
+
+        public async Task DeleteTurnOnLigth(Guid gameLightId)
+        {
+           var removedEntity = await _dbContext.Set<GameLight>().Where(x=>x.Id==gameLightId).FirstOrDefaultAsync();
+            if (removedEntity != null)
+            {
+                 _dbContext.Set<GameLight>().Remove(removedEntity);
+                 _dbContext.SaveChanges();
+            }
+        }
     }
 
         

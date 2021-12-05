@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "MeDirect Game Settings";
 }
 @model MeDirect.Web.Models.UpdateGameSettingsViewModel
 
@@ -20,6 +20,49 @@
     <button type="submit" class="btn btn-primary">Update</button>
 
 }
+<br />
+
+
+<form>
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label class="sr-only" for="OpenLightY">Open Light Y Coordinate(Row)</label>
+            <input type="text" class="form-control mb-2" id="OpenLightY" placeholder="Light Y Coordinate">
+        </div>
+        <div class="col-auto">
+            <label class="sr-only" for="OpenLightX">Open Light X Coordinate(Col)</label>
+            <input type="text" class="form-control mb-2" id="OpenLightX" placeholder="Light Y Coordinate">
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-success" id="addNewCoordinate">Add</button>
+        </div>
+    </div>
+</form>
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Open Light Y Coordinate(Row)</th>
+            <th scope="col">Open Light X Coordinate(Col)</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GameLights)
+        {
+            <tr>
+                <td>@item.LightOpenY</td>
+                <td>@item.LightOpenX</td>
+                <td><a href="#" onclick="Del('@item.Id')">Del</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
 
 
 @section Scripts{
@@ -39,7 +82,7 @@
                     url: '/Home/Settings',
                     data: UpdateGameSettingsViewModel,
                     async: false,
-                    success: success,
+                    success: successGameSetting,
                     error: error
                 });
             }
@@ -48,7 +91,7 @@
             }
         })
 
-        function success(result, status) {
+        function successGameSetting(result, status) {
               if (result.code == 0) {
                     Swal.fire(
                         result.msg,
@@ -75,6 +118,86 @@
 
             })
         }
+
+
+        $('#addNewCoordinate').click(function () {
+            debugger;
+            var SetGameLightsModel = {
+                GameLight: {
+                    GameSettingId: $("#GameSettings_Id").val(),
+                    LightOpenY: $("#OpenLightY").val(),
+                    LightOpenX: $('#OpenLightX').val()
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/AddCoordinate',
+                data: SetGameLightsModel,
+                async: false,
+                success: successGameLight,
+                error: error
+            });
+        })
+
+        function successGameLight(result,status) {
+             if (result.code == 0) {
+                    Swal.fire(
+                        result.msg,
+                        '',
+                        'success'
+                    ).then(function () {
+                        var url = '@Url.Action("Settings", "Home")';
+                        window.location.href = url;
+                    });
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: result.msg,
+
+                    })
+                }
+        }
+
+        function Del(lightId) {
+            var SetGameLightsModel = {
+                GameLight: {
+                    Id: lightId,
+                    LightOpenY: $("#OpenLightY").val(),
+                    LightOpenX: $('#OpenLightX').val()
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: '/Home/DelOpenLight',
+                data: SetGameLightsModel,
+                async: false,
+                success: successDelLight,
+                error: error
+            });
+        }
+
+        function successDelLight(result,status) {
+             if (result.code == 0) {
+                    Swal.fire(
+                        result.msg,
+                        '',
+                        'success'
+                    ).then(function () {
+                        var url = '@Url.Action("Settings", "Home")';
+                        window.location.href = url;
+                    });
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: result.msg,
+
+                    })
+                }
+        }
+
     </script>
 
 }
