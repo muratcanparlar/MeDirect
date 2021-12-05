@@ -40,8 +40,8 @@
             console.log(xlength);
         })
 
-
         $('#createGame').click(function () {
+            document.getElementById('totalClickCount').value = 0;
             $.ajax({
                 type: "POST",
                 url: '/Home/CreateBoard',
@@ -58,23 +58,6 @@
         }
         function error(result, status) {
             alert('Sorry! The GameBoard Couldnt Create');
-        }
-
-
-        function createGame2(xlength, ylength) {
-
-            // Update board container
-            boardContainer = createBoard(xlength, ylength);
-
-            // Reset counter
-            attemptsCounter = 0;
-            /*attemptsPara.innerHTML = `Attempts: ${attemptsCounter}`;*/
-
-            // Reset board completed
-            boardCompleted = false;
-
-            // Finally display the board
-            displayBoard(boardContainer);
         }
 
         function createBoard(x, y) {
@@ -125,9 +108,6 @@
             }
         }
 
-
-
-
         function userClick(y, x, xlen, ylen) {
             debugger;
             var i = document.getElementById('totalClickCount').value;
@@ -164,59 +144,7 @@
                     })
                 }
             });
-
-
-
-            //updateBoard(boardContainer, y, x);
-            //displayBoard(boardContainer, xlen, ylen);
-
-            //var i = document.getElementById('totalClickCount').value;
-            //document.getElementById('totalClickCount').value = ++i;
-
-            //var boardCompleted = checkBoardCompleted(boardContainer);
-
-            //if (boardCompleted) {
-            //     Swal.fire(
-            //            `Congratulations! you've completed the game with ${document.getElementById('totalClickCount').value} attempt. `,
-            //            '',
-            //            'success'
-            //        )    
-            //}
-
         }
-
-
-        //function updateBoard(board, y, x) {
-
-        //    board[y].columns[x].col = !board[y].columns[x].col;
-        //    // Update
-
-        //    if (y > 0) {
-        //        board[y - 1].columns[x].col = !board[y - 1].columns[x].col;
-        //    }
-        //    if (y < board.length - 1) {
-        //        board[y + 1].columns[x].col = !board[y + 1].columns[x].col;
-        //    }
-        //    if (x > 0) {
-        //        board[y].columns[x - 1].col = !board[y].columns[x - 1].col;
-        //    }
-        //    if (x < board.length - 1) {
-        //        board[y].columns[x + 1].col = !board[y].columns[x + 1].col;
-        //    }
-        //}
-
-        //function checkBoardCompleted(board) {
-        //    debugger;
-        //    let result = true;
-        //    for (i = 0; i < board.length; i++) {
-        //        for (j = 0; j < board.length; j++) {
-        //            if (board[i].columns[j].col === false) {
-        //                result=false;
-        //            }
-        //        }
-        //    }
-        //    return result;
-        //}
     </script>
 
 }
