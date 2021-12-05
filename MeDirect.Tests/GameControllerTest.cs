@@ -12,7 +12,7 @@ using Xunit;
 namespace MeDirect.Tests
 {
 
-    
+    [Collection("Sequential")]
     public class GameControllerTest : IClassFixture<InMemoryWebApplicationFactory<Startup>>
     {
         private InMemoryWebApplicationFactory<Startup> _factory;
@@ -23,38 +23,13 @@ namespace MeDirect.Tests
         }
 
         [Fact]
-        public async Task delete_gamesetting_returnSuccess()
+        public async Task web_api_is_healty_returnSuccess()
         {
-            var setting = new GameSetting
-            {
-                Id = System.Guid.Parse("12b668a7-9dff-4832-a769-6605e717e192"),
-                Size = 4
-
-            };
             var client = _factory.CreateClient();
-            var httpContent = new StringContent(JsonConvert.SerializeObject(setting), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/game/delete", httpContent);
+            var response = await client.GetAsync("/api/Game/GameSettings");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
-        [Fact]
-        public async Task add_gamesetting_returnSuccess()
-        {
-            var setting = new GameSetting
-            {
-                Id = System.Guid.Parse("51702bc4-681f-42d3-927e-f995147df6be"),
-                Size = 8
-
-            };
-            var client = _factory.CreateClient();
-            var httpContent = new StringContent(JsonConvert.SerializeObject(setting), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/game/create", httpContent);
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-       
 
         [Fact]
         public async Task update_game_size_returnSuccess()
@@ -73,7 +48,6 @@ namespace MeDirect.Tests
         }
 
 
-
         [Fact]
         public async Task get_game_size_returnSuccesValue()
         {
@@ -82,7 +56,7 @@ namespace MeDirect.Tests
 
             var strinResult = await response2.Content.ReadAsStringAsync();
             var jsonObject = JsonConvert.DeserializeObject<GameSetting>(strinResult);
-            Assert.Equal("4", jsonObject.Size.ToString());
+            Assert.Equal("7", jsonObject.Size.ToString());
         }
 
         [Fact]
@@ -104,21 +78,7 @@ namespace MeDirect.Tests
         }
 
 
-        [Fact]
-        public async Task draw_gameboard_with_open_light_returnSuccess()
-        {
-            var client = _factory.CreateClient();
-            var response2 = await client.GetAsync("/api/game/DrawGameBoard");
-
-            var strinResult = await response2.Content.ReadAsStringAsync();
-            var jsonObject = JsonConvert.DeserializeObject<IEnumerable<BoardRow>>(strinResult);
-            List<BoardRow> asList = jsonObject.ToList();
-            
-            Assert.True(asList[0].Columns[0].col); //check open lights
-
-            Assert.True(asList[2].Columns[2].col); //check open lights
-
-        }
+       
 
         [Fact]
         public async Task click_gameboard_and_return_not_complated()
@@ -255,13 +215,39 @@ namespace MeDirect.Tests
 
 
         [Fact]
-        public async Task web_api_is_healty_returnSuccess()
+        public async Task delete_gamesetting_returnSuccess()
         {
+            var setting = new GameSetting
+            {
+                Id = System.Guid.Parse("12b668a7-9dff-4832-a769-6605e717e192"),
+                Size = 4
+
+            };
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/Game/GameSettings");
+            var httpContent = new StringContent(JsonConvert.SerializeObject(setting), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("/api/game/delete", httpContent);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [Fact]
+        public async Task add_gamesetting_returnSuccess()
+        {
+            var setting = new GameSetting
+            {
+                Id = System.Guid.Parse("51702bc4-681f-42d3-927e-f995147df6be"),
+                Size = 8
+
+            };
+            var client = _factory.CreateClient();
+            var httpContent = new StringContent(JsonConvert.SerializeObject(setting), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("/api/game/create", httpContent);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+
+      
 
     }
 }

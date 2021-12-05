@@ -61,7 +61,7 @@ namespace MeDirect.Service
             var settingToBeUpdated = await _dbContext.Set<GameSetting>().SingleOrDefaultAsync(x => x.Id == gameSetting.Id);
             settingToBeUpdated.Size = gameSetting.Size;
             _dbContext.Set<GameSetting>().Update(settingToBeUpdated);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
 
